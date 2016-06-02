@@ -50,6 +50,7 @@ gulp.task('export', function(cb) {
     request.on('done', function(affected) {
       // Always emitted as the last one 
       console.log(affected);
+      stream.end();
       cb();
     });
   }).catch(errorHandler);
