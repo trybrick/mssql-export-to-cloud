@@ -51,6 +51,7 @@ gulp.task('export', function(cb) {
       // Always emitted as the last one 
       console.log(affected);
       stream.end();
+      Db.close();
       cb();
     });
   }).catch(errorHandler);
