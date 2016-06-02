@@ -3,7 +3,7 @@ var gzip = require('gulp-gzip');
 var s3 = require('gulp-s3-upload');
 var json2csv = require('json2csv');
 var sql = require('mssql');
-
+var fs = require('fs');
 var config = require('./config.js')
 
 
