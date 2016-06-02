@@ -4,8 +4,10 @@ var s3 = require('gulp-s3-upload');
 var json2csv = require('json2csv');
 var sql = require('mssql');
 var fs = require('fs');
-var config = require('./config.js')
+var util = require('gulp-util');
 
+var config = require('./config.js')
+var etype = util.env.etype || 'products';
 
 gulp.task('export', function(cb) {
   var conn = null;
@@ -19,8 +21,10 @@ gulp.task('export', function(cb) {
       return;
     }
   };
+  var typeConfig = config.etypes[etype];
+  console.log(typeConfig);
   var Db = sql.connect(config.mssql);
-  var query = 'SELECT * FROM dbo.CircularItemSearch WITH (NOLOCK)';
+  var query = 'SELECT * FROM ' + typeConfig.table;
   Db.then(function() {
     new sql.Request().query(query).then(function(records) {
 
@@ -31,7 +35,7 @@ gulp.task('export', function(cb) {
         if (err) {
           throw new Error('CSV export: ' + err);
         }
-        fs.writeFile(config.output, csv, cb);
+        fs.writeFile(typeConfig.output, csv, cb);
       });
 
     }).catch(errorHandler);

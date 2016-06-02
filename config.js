@@ -17,5 +17,10 @@ module.exports = {
       appName: 'sqlexport'
     }
   },
-  output: 'result.csv'
+  etypes: {
+    products: {
+      table: 'dbo.ProductSearch WITH (NOLOCK)',
+      output: 'products_csv.gz'
+    }
+  }
 };
