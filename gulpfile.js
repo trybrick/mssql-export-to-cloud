@@ -44,7 +44,9 @@ gulp.task('export', function(cb) {
       row.type = etype;
       row.Id = row[typeConfig.idColumn];
       i++;
-      console.log(i, row.Id);
+      if (i % 10000 == 0) {
+        console.log(i, row.Id);
+      }
       stream.write(JSON.stringify(row) + '\n');
     });
 
@@ -64,6 +66,7 @@ gulp.task('upload', function() {
     buffer: false
   })
     .pipe(gzip())
+    .pipe(gulp.dest('./build'))
     .pipe(s3({
       Bucket: 'brick-workspace',
       manualContentEncoding: 'gzip',
