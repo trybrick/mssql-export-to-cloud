@@ -6,6 +6,7 @@ var sql = require('mssql');
 var fs = require('fs');
 var util = require('gulp-util');
 var moment = require('moment');
+var runSequence = require('run-sequence');
 
 var config = require('./config.js')
 var etype = util.env.etype || 'product';
@@ -66,7 +67,6 @@ gulp.task('upload', function() {
     buffer: false
   })
     .pipe(gzip())
-    .pipe(gulp.dest('./build'))
     .pipe(s3({
       Bucket: 'brick-workspace',
       manualContentEncoding: 'gzip',
@@ -79,4 +79,6 @@ gulp.task('upload', function() {
     }));
 });
 
-gulp.task('default', ['export', 'upload']);
+gulp.task('default', function() {
+  runSequence('export', 'upload');
+});
