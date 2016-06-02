@@ -79,6 +79,6 @@ gulp.task('upload', function() {
     }));
 });
 
-gulp.task('default', function() {
-  runSequence('export', 'upload');
+gulp.task('default', function(cb) {
+  runSequence('export', 'upload', cb);
 });
