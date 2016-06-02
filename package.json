@@ -20,7 +20,6 @@
     "gulp-gzip": "^1.4.0",
     "gulp-s3-upload": "^1.6.0",
     "gulp-util": "^3.0.7",
-    "json2csv": "^3.4.2",
     "moment": "^2.13.0",
     "mssql": "^3.3.0",
     "run-sequence": "^1.2.1"

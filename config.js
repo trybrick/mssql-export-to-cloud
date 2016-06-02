@@ -1,7 +1,14 @@
+var fs = require('fs');
+var env = process.env;
+
+if (fs.existsSync('./.env.json')) {
+  env = require('./.env.json');
+}
+
 module.exports = {
   mssql: {
-    user: process.env.MSSQL_USER,
-    password: process.env.MSSQL_PASS,
+    user: env.MSSQL_USER,
+    password: env.MSSQL_PASS,
     server: '172.25.46.74',
     driver: 'tedious',
     database: 'ExpressLaneAdmin',
@@ -16,6 +23,11 @@ module.exports = {
       instanceName: 'gsnweb',
       appName: 'sqlexport'
     }
+  },
+  aws: {
+    accessKeyId: env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    region: env.AWS_REGION || 'us-west-2'
   },
   etypes: {
     product: {

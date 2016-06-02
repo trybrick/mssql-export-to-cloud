@@ -1,7 +1,5 @@
 var gulp = require('gulp');
 var gzip = require('gulp-gzip');
-var s3 = require('gulp-s3-upload');
-var json2csv = require('json2csv');
 var sql = require('mssql');
 var fs = require('fs');
 var util = require('gulp-util');
@@ -15,6 +13,7 @@ var today = moment(new Date());
 var typeConfig = config.etypes[etype];
 console.log(typeConfig);
 
+var s3 = require('gulp-s3-upload')(typeConfig.aws);
 gulp.task('export', function(cb) {
   var conn = null;
   var stream = fs.createWriteStream(typeConfig.output);
