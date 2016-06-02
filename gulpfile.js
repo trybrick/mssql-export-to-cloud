@@ -67,6 +67,7 @@ gulp.task('upload', function() {
     buffer: false
   })
     .pipe(gzip())
+    .pipe(gulp.dest('build'))
     .pipe(s3({
       Bucket: 'brick-workspace',
       manualContentEncoding: 'gzip',
