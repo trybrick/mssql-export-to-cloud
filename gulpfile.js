@@ -33,8 +33,6 @@ gulp.task('export', function(cb) {
 
     request.on('row', function(row) {
       // Emitted for each row in a recordset 
-
-      fs.writeFile(typeConfig.output, csv, cb);
       fs.appendFileSync(typeConfig.output, JSON.stringify(row) + '\n');
     });
 
