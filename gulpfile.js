@@ -5,6 +5,11 @@ var fs = require('fs');
 var util = require('gulp-util');
 var moment = require('moment');
 var runSequence = require('run-sequence');
+var createBatchRequestStream = require('batch-request-stream');
+var mkdirp = require('mkdirp');
+var _ = require('lodash');
+var path = require('path');
+
 
 var config = require('./config.js')
 var etype = util.env.etype || 'product';
@@ -14,9 +19,56 @@ var typeConfig = config.etypes[etype];
 console.log(typeConfig);
 
 var s3 = require('gulp-s3-upload')(typeConfig.aws);
+
+function exists(filePath, isFolder) {
+  try {
+    var stat = fs.statSync(filePath);
+    return isFolder ? stat.isDirectory() : stat.isFile();
+  } catch (err) {
+    return false;
+  }
+}
+
+function writeFile(obj, outFile) {
+  outFile = path.resolve(outFile);
+  var data = JSON.stringify(obj) + '\n';
+
+  var basePath = path.dirname(outFile);
+  if (!exists(basePath, true)) {
+    mkdirp.sync(basePath);
+  }
+
+  if (!exists(outFile)) {
+    fs.writeFileSync(
+      outFile, data
+    );
+
+    return;
+  }
+
+  fs.appendFileSync(
+    outFile, data
+  );
+}
+
+function batchWrite(items, cb) {
+  _.each(items, function(obj, k) {
+    writeFile(obj, typeConfig.output);
+  })
+  cb();
+}
+
+var batchRequestStream = createBatchRequestStream({
+  request: batchWrite,
+  batchSize: 10000,
+  maxLiveRequests: 1,
+  streamOptions: {
+    objectMode: true
+  }
+})
+
 gulp.task('export', function(cb) {
   var conn = null;
-  var stream = fs.createWriteStream(typeConfig.output);
   var errorHandler = function errorHandler(err) {
     if (err) {
       console.log(err);
@@ -46,9 +98,8 @@ gulp.task('export', function(cb) {
       i++;
       if (i % 10000 == 0) {
         console.log(i, row.Id);
-        stream.flush();
       }
-      stream.write(JSON.stringify(row) + '\n');
+      batchRequestStream.write(row);
     });
 
     request.on('error', errorHandler);
