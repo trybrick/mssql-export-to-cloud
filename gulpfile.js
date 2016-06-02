@@ -63,17 +63,15 @@ gulp.task('export', function(cb) {
 });
 
 gulp.task('upload', function() {
-  return gulp.src(typeConfig.output, {
-    buffer: false
-  })
+  return gulp.src(typeConfig.output)
     .pipe(gzip())
-    .pipe(gulp.dest('build'))
     .pipe(s3({
       Bucket: 'brick-workspace',
       manualContentEncoding: 'gzip',
       keyTransform: function(relative_filename) {
         // add yy mm dd to filename
         var new_name = 'exports/' + today.format("YYYYMMDD") + '/' + relative_filename;
+        console.log(new_name);
         // or do whatever you want 
         return new_name;
       }
