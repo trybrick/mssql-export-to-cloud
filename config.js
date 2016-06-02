@@ -20,7 +20,7 @@ module.exports = {
   etypes: {
     product: {
       query: 'SELECT * FROM dbo.ProductSearch WITH (NOLOCK)',
-      output: 'products_csv.gz',
+      output: 'product_jsline',
       idColumn: 'ProductID',
       rowHandler: function(row) {
         row.ChainList = (row.ChainList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
@@ -28,7 +28,7 @@ module.exports = {
     },
     circular: {
       query: 'SELECT * FROM dbo.CircularItemSearch WITH (NOLOCK)',
-      output: 'circulars_csv.gz',
+      output: 'circular_jsline',
       idColumn: 'CircularItemID',
       rowHandler: function(row) {
         row.SkillLevelList = (row.SkillLevelList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
@@ -38,7 +38,7 @@ module.exports = {
     },
     recipe: {
       query: 'SELECT * FROM dbo.RecipeSearchIndex WITH (NOLOCK)',
-      output: 'recipes_csv.gz',
+      output: 'recipe_jsline',
       idColumn: 'RecipeID',
       rowHandler: function(row) {
         row.StoreList = (row.StoreList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
