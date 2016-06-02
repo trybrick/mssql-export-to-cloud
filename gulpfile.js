@@ -27,7 +27,7 @@ gulp.task('export', function(cb) {
   };
   var Db = sql.connect(config.mssql);
   var query = 'SELECT * FROM ' + typeConfig.table;
-  return Db.then(function() {
+  Db.then(function() {
     var request = new sql.Request();
     request.stream = true;
     request.query(query);
