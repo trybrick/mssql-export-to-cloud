@@ -31,8 +31,7 @@ gulp.task('export', function(cb) {
         if (err) {
           throw new Error('CSV export: ' + err);
         }
-        fs.writeFile(config.output, csv);
-        cb();
+        fs.writeFile(config.output, csv, cb);
       });
 
     }).catch(errorHandler);
