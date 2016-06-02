@@ -70,7 +70,7 @@ var batchRequestStream = createBatchRequestStream({
 gulp.task('export', function(cb) {
   var conn = null;
 
-  if (!exists(typeConfig.output)) {
+  if (exists(typeConfig.output)) {
     fs.unlinkSync(typeConfig.output);
   }
 
@@ -111,7 +111,6 @@ gulp.task('export', function(cb) {
 
     request.on('done', function(affected) {
       // Always emitted as the last one 
-      stream.end();
       request.connection.close();
       cb();
     });
