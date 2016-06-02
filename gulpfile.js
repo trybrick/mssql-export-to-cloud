@@ -14,9 +14,7 @@ gulp.task('export', function(cb) {
   var errorHandler = function errorHandler(err) {
     if (err) {
       console.log(err);
-      if (conn) {
-        conn.close();
-      }
+
       cb(err);
       return;
     }
@@ -26,19 +24,27 @@ gulp.task('export', function(cb) {
   var Db = sql.connect(config.mssql);
   var query = 'SELECT * FROM ' + typeConfig.table;
   Db.then(function() {
-    new sql.Request().query(query).then(function(records) {
+    var request = new sql.Request().query(query);
+    request.stream = true;
+    request.query(query);
+    request.on('recordset', function(columns) {
+      // Emitted once for each recordset in a query 
+    });
 
-      console.log(records.length);
-      json2csv({
-        data: records
-      }, function(err, csv) {
-        if (err) {
-          throw new Error('CSV export: ' + err);
-        }
-        fs.writeFile(typeConfig.output, csv, cb);
-      });
+    request.on('row', function(row) {
+      // Emitted for each row in a recordset 
 
-    }).catch(errorHandler);
+      fs.writeFile(typeConfig.output, csv, cb);
+      fs.appendFileSync(typeConfig.output, JSON.stringify(row) + '\n');
+    });
+
+    request.on('error', errorHandler);
+
+    request.on('done', function(affected) {
+      // Always emitted as the last one 
+      console.log(affected);
+      cb();
+    });
   }).catch(errorHandler);
 });
 
