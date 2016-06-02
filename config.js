@@ -5,7 +5,7 @@ module.exports = {
     server: '172.25.46.74',
     driver: 'tedious',
     database: 'ExpressLaneAdmin',
-    connectionTimeout: 5000,
+    connectionTimeout: 15000,
     requestTimeout: 15000000,
     pool: {
       max: 200,
@@ -19,7 +19,7 @@ module.exports = {
   },
   etypes: {
     product: {
-      table: 'dbo.ProductSearch WITH (NOLOCK)',
+      query: 'SELECT * FROM dbo.ProductSearch WITH (NOLOCK)',
       output: 'products_csv.gz',
       idColumn: 'ProductID',
       rowHandler: function(row) {
@@ -27,7 +27,7 @@ module.exports = {
       }
     },
     circular: {
-      table: 'dbo.CircularItemSearch WITH (NOLOCK)',
+      query: 'SELECT * FROM dbo.CircularItemSearch WITH (NOLOCK)',
       output: 'circulars_csv.gz',
       idColumn: 'CircularItemID',
       rowHandler: function(row) {
@@ -37,7 +37,7 @@ module.exports = {
       }
     },
     recipe: {
-      table: 'dbo.RecipeSearchIndex WITH (NOLOCK)',
+      query: 'SELECT * FROM dbo.RecipeSearchIndex WITH (NOLOCK)',
       output: 'recipes_csv.gz',
       idColumn: 'RecipeID',
       rowHandler: function(row) {

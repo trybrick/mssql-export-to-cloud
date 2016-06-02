@@ -26,7 +26,8 @@ gulp.task('export', function(cb) {
     }
   };
   var Db = sql.connect(config.mssql);
-  var query = 'SELECT * FROM ' + typeConfig.table;
+  var query = typeConfig.query;
+  var i = 0;
   Db.then(function() {
     var request = new sql.Request();
     request.stream = true;
@@ -42,6 +43,8 @@ gulp.task('export', function(cb) {
       }
       row.type = etype;
       row.Id = row[typeConfig.idColumn];
+      i++;
+      console.log(i, row.Id);
       stream.write(JSON.stringify(row) + '\n');
     });
 
@@ -49,9 +52,8 @@ gulp.task('export', function(cb) {
 
     request.on('done', function(affected) {
       // Always emitted as the last one 
-      console.log(affected);
       stream.end();
-      Db.close();
+      request.connection.close();
       cb();
     });
   }).catch(errorHandler);
@@ -64,8 +66,7 @@ gulp.task('upload', function() {
     .pipe(gzip())
     .pipe(gulp.dest('./build'))
     .pipe(s3({
-      Bucket: process.env.S3_BUCKET,
-      ACL: 'public-read',
+      Bucket: 'brick-exports',
       manualContentEncoding: 'gzip',
       keyTransform: function(relative_filename) {
         // add yy mm dd to filename
