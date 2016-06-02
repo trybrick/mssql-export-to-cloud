@@ -41,7 +41,7 @@ gulp.task('export', function(cb) {
       if (typeConfig.rowHandler) {
         typeConfig.rowHandler(row);
       }
-      row.type = etype;
+      row.etype = etype;
       row.Id = row[typeConfig.idColumn];
       i++;
       if (i % 10000 == 0) {
