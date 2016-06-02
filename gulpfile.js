@@ -64,9 +64,8 @@ gulp.task('upload', function() {
     buffer: false
   })
     .pipe(gzip())
-    .pipe(gulp.dest('./build'))
     .pipe(s3({
-      Bucket: 'brick-exports',
+      Bucket: 'brick-workspace',
       manualContentEncoding: 'gzip',
       keyTransform: function(relative_filename) {
         // add yy mm dd to filename
@@ -77,4 +76,4 @@ gulp.task('upload', function() {
     }));
 });
 
-gulp.task('default', ['export']);
+gulp.task('default', ['export', 'upload']);
