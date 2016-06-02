@@ -69,6 +69,11 @@ var batchRequestStream = createBatchRequestStream({
 
 gulp.task('export', function(cb) {
   var conn = null;
+
+  if (!exists(typeConfig.output)) {
+    fs.unlinkSync(typeConfig.output);
+  }
+
   var errorHandler = function errorHandler(err) {
     if (err) {
       console.log(err);
