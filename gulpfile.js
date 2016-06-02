@@ -46,6 +46,7 @@ gulp.task('export', function(cb) {
       i++;
       if (i % 10000 == 0) {
         console.log(i, row.Id);
+        stream.flush();
       }
       stream.write(JSON.stringify(row) + '\n');
     });
