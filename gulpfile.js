@@ -164,7 +164,7 @@ gulp.task('upload', function() {
       manualContentEncoding: 'gzip',
       keyTransform: function(relative_filename) {
         // add yy mm dd to filename
-        var new_name = 'exports/' + today.format("YYYYMMDD") + '/' + relative_filename;
+        var new_name = 'exports/' + etype + '/' + relative_filename;
         console.log(new_name);
         // or do whatever you want 
         return new_name;
