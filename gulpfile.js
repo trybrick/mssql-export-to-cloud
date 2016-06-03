@@ -130,20 +130,11 @@ gulp.task('clean', function() {
 });
 
 gulp.task('compress', function() {
-  return gulp.src(outPath + '**/*')
+  return gulp.src(outPath + '**/*', {
+    buffer: false
+  })
     .pipe(gzip())
-    .pipe(gulp.dest(outPath))
-    .pipe(s3({
-      Bucket: 'brick-workspace',
-      manualContentEncoding: 'gzip',
-      keyTransform: function(relative_filename) {
-        // add yy mm dd to filename
-        var new_name = 'exports/' + today.format("YYYYMMDD") + '/' + relative_filename;
-        console.log(new_name);
-        // or do whatever you want 
-        return new_name;
-      }
-    }));
+    .pipe(gulp.dest(outPath));
 });
 
 gulp.task('upload', function() {
