@@ -9,7 +9,8 @@ var createBatchRequestStream = require('batch-request-stream');
 var mkdirp = require('mkdirp');
 var _ = require('lodash');
 var path = require('path');
-
+var del = require('del');
+var outPath = './exports/';
 
 var config = require('./config.js')
 var etype = util.env.etype || 'product';
@@ -52,16 +53,19 @@ function writeFile(obj, outFile) {
 }
 
 function batchWrite(items, cb) {
+  var i = 0;
   _.each(items, function(obj, k) {
-    writeFile(obj, typeConfig.output);
+    var filePosfix = i % 10;
+    writeFile(obj, outPath + typeConfig.output + filePosfix);
+    i++;
   })
   cb();
 }
 
 var batchRequestStream = createBatchRequestStream({
   request: batchWrite,
-  batchSize: 10000,
-  maxLiveRequests: 1,
+  batchSize: 1000,
+  maxLiveRequests: 10,
   streamOptions: {
     objectMode: true
   }
@@ -117,8 +121,14 @@ gulp.task('export', function(cb) {
   }).catch(errorHandler);
 });
 
+gulp.task('clean', function(cb) {
+  del([outPath + '**/*'], cb);
+});
+
 gulp.task('upload', function() {
-  return gulp.src(typeConfig.output)
+  return gulp.src(outPath + '**/*', {
+    buffer: false
+  })
     .pipe(gzip())
     .pipe(s3({
       Bucket: 'brick-workspace',
@@ -134,5 +144,5 @@ gulp.task('upload', function() {
 });
 
 gulp.task('default', function(cb) {
-  runSequence('export', 'upload', cb);
+  runSequence('clean', 'export', 'upload', cb);
 });
