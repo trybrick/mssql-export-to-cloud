@@ -68,8 +68,8 @@ function batchWrite(items, cb) {
 
 var batchRequestStream = createBatchRequestStream({
   request: batchWrite,
-  batchSize: 1000,
-  maxLiveRequests: 10,
+  batchSize: 100,
+  maxLiveRequests: 100,
   streamOptions: {
     objectMode: true
   }
