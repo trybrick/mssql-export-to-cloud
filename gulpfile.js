@@ -10,8 +10,10 @@ var mkdirp = require('mkdirp');
 var _ = require('lodash');
 var path = require('path');
 var del = require('del');
-var outPath = './exports/';
+var helper = require('helper.js');
+var glob = require('glob');
 
+var outPath = './exports/';
 var config = require('./config.js')
 var etype = util.env.etype || 'product';
 var today = moment(new Date());
@@ -129,12 +131,16 @@ gulp.task('clean', function() {
   return del([outPath + '**/*']);
 });
 
-gulp.task('compress', function() {
-  return gulp.src(outPath + '**/*', {
-    buffer: false
-  })
-    .pipe(gzip())
-    .pipe(gulp.dest(outPath));
+gulp.task('compress', function(cb) {
+  glob(outPath + '**/*', function(er, files) {
+    if (er) {
+      cb(er)
+    }
+
+    async.eachSeries(files, function(file, callback) {
+      helper.compressFile(file, callback);
+    }, cb);
+  });
 });
 
 gulp.task('upload', function() {
