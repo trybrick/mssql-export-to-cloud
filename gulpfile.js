@@ -11,7 +11,7 @@ var _ = require('lodash');
 var path = require('path');
 var del = require('del');
 var helper = require('helper.js');
-var glob = require('glob');
+var glob = require("multi-glob").glob;
 
 var outPath = './exports/';
 var config = require('./config.js')
@@ -132,7 +132,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('compress', function(cb) {
-  glob(outPath + '**/*', function(er, files) {
+  glob([outPath + '**/*', '!' + outPath + '*.gz'], function(er, files) {
     if (er) {
       cb(er)
     }

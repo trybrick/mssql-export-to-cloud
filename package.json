@@ -29,6 +29,7 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.13.0",
     "mssql": "^3.3.0",
+    "multi-glob": "^1.0.1",
     "run-sequence": "^1.2.1"
   }
 }
