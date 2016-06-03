@@ -12,6 +12,7 @@ var path = require('path');
 var del = require('del');
 var glob = require("multi-glob").glob;
 var async = require('async');
+var zlib = require('zlib');
 
 var outPath = './exports/';
 var config = require('./config.js')
