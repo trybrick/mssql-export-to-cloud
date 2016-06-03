@@ -10,7 +10,7 @@ var mkdirp = require('mkdirp');
 var _ = require('lodash');
 var path = require('path');
 var del = require('del');
-var helper = require('helper.js');
+var helper = require('./helper.js');
 var glob = require("multi-glob").glob;
 
 var outPath = './exports/';
