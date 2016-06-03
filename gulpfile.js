@@ -133,16 +133,12 @@ gulp.task('compress', function() {
   return gulp.src(outPath + '**/*', {
     buffer: false
   })
-    .pipe(gzip({
-      gzipOptions: {
-        memLevel: 1
-      }
-    }))
+    .pipe(gzip())
     .pipe(gulp.dest(outPath));
 });
 
 gulp.task('upload', function() {
-  return gulp.src(outPath + '*.gz', {
+  return gulp.src([outPath + '**/*', '!' + outPath + '*.gz'], {
     buffer: false
   })
     .pipe(s3({
