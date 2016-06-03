@@ -133,7 +133,11 @@ gulp.task('compress', function() {
   return gulp.src(outPath + '**/*', {
     buffer: false
   })
-    .pipe(gzip())
+    .pipe(gzip({
+      gzipOptions: {
+        memLevel: 1
+      }
+    }))
     .pipe(gulp.dest(outPath));
 });
 
