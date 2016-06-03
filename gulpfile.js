@@ -145,7 +145,7 @@ gulp.task('compress', function(cb) {
 });
 
 gulp.task('upload', function() {
-  return gulp.src([outPath + '**/*', '!' + outPath + '*.gz'], {
+  return gulp.src(outPath + '*.gz', {
     buffer: false
   })
     .pipe(s3({
