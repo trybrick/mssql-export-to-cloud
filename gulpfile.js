@@ -20,6 +20,7 @@ var typeConfig = config.etypes[etype];
 console.log(typeConfig);
 
 var s3 = require('gulp-s3-upload')(typeConfig.aws);
+mkdirp(outPath);
 
 function exists(filePath, isFolder) {
   try {
@@ -28,6 +29,10 @@ function exists(filePath, isFolder) {
   } catch (err) {
     return false;
   }
+}
+
+if (!exists(outPath, true)) {
+  mkdirp.sync(outPath);
 }
 
 function writeFile(obj, outFile) {
