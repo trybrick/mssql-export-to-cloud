@@ -126,8 +126,8 @@ gulp.task('export', function(cb) {
   }).catch(errorHandler);
 });
 
-gulp.task('clean', function(cb) {
-  del([outPath + '**/*'], cb);
+gulp.task('clean', function() {
+  return del([outPath + '**/*']);
 });
 
 gulp.task('upload', function() {
