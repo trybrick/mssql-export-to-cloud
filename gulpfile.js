@@ -10,7 +10,6 @@ var mkdirp = require('mkdirp');
 var _ = require('lodash');
 var path = require('path');
 var del = require('del');
-var helper = require('./helper.js');
 var glob = require("multi-glob").glob;
 var async = require('async');
 
@@ -31,6 +30,19 @@ function exists(filePath, isFolder) {
   } catch (err) {
     return false;
   }
+}
+
+function compressFile(inputFile, cb) {
+  var gzip = zlib.createGzip();
+  var fs = require('fs');
+  var inp = fs.createReadStream(inputFile);
+  var out = fs.createWriteStream(inputFile + '.gz');
+
+  inp.pipe(gzip).pipe(out);
+  inp.on('error', function(err) {
+    cb(err);
+  });
+  inp.on('close', cb);
 }
 
 if (!exists(outPath, true)) {
@@ -138,9 +150,7 @@ gulp.task('compress', function(cb) {
       cb(er)
     }
 
-    async.eachSeries(files, function(file, callback) {
-      helper.compressFile(file, callback);
-    }, cb);
+    async.eachSeries(files, compressFile, cb);
   });
 });
 
