@@ -145,7 +145,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('compress', function(cb) {
-  glob(['!(' + outPath + '*.gz)'], function(er, files) {
+  glob(['!' + outPath + '*.gz'], function(er, files) {
     if (er) {
       cb(er)
     }
