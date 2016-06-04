@@ -18,6 +18,7 @@ var outPath = './exports/';
 var config = require('./config.js')
 var etype = util.env.etype || 'product';
 var today = moment(new Date());
+var uploadTasks = [];
 
 var typeConfig = config.etypes[etype];
 console.log(typeConfig);
@@ -44,6 +45,28 @@ function compressFile(inputFile, cb) {
     cb(err);
   });
   inp.on('close', cb);
+}
+
+function processFile(inputFile, cb) {
+  var taskName = 'upload' + uploadTasks.length;
+  uploadTasks.push(taskName);
+  gulp.task('upload-' + taskName, function() {
+    return gulp.src(inputFile + '.gz', {
+      buffer: false
+    })
+      .pipe(s3({
+        Bucket: 'brick-workspace',
+        manualContentEncoding: 'gzip',
+        keyTransform: function(relative_filename) {
+          // add yy mm dd to filename
+          var new_name = 'exports/' + etype + '/' + relative_filename;
+          console.log(new_name);
+          // or do whatever you want 
+          return new_name;
+        }
+      }));
+  });
+  compressFile(inputFile, cb);
 }
 
 if (!exists(outPath, true)) {
@@ -123,6 +146,7 @@ gulp.task('export', function(cb) {
         typeConfig.rowHandler(row);
       }
       row.etype = etype;
+      row.idx = etype + '-' + today.format("YYYY.MM.DD");
       row.Id = row[typeConfig.idColumn];
       i++;
       if (i % 10000 == 0) {
@@ -151,12 +175,12 @@ gulp.task('compress', function(cb) {
       cb(er)
     }
 
-    async.eachSeries(files, compressFile, cb);
+    async.eachSeries(files, processFile, cb);
   });
 });
 
-gulp.task('upload', function() {
-  return gulp.src(outPath + '*.gz', {
+gulp.task('upload', function(cb) {
+  /*return gulp.src(outPath + '*.gz', {
     buffer: false
   })
     .pipe(s3({
@@ -169,7 +193,9 @@ gulp.task('upload', function() {
         // or do whatever you want 
         return new_name;
       }
-    }));
+    }));*/
+  uploadTasks.push(cb);
+  runSequence.apply(null, uploadTasks);
 });
 
 gulp.task('default', function(cb) {
