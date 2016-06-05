@@ -50,7 +50,7 @@ function compressFile(inputFile, cb) {
 function processFile(inputFile, cb) {
   var taskName = 'upload' + uploadTasks.length;
   uploadTasks.push(taskName);
-  gulp.task('upload-' + taskName, function() {
+  gulp.task(taskName, function() {
     return gulp.src(inputFile + '.gz', {
       buffer: false
     })
