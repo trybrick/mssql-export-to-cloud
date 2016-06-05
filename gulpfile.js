@@ -169,6 +169,10 @@ gulp.task('clean', function() {
   return del([outPath + '**/*']);
 });
 
+gulp.task('clean-gz', function() {
+  return del([outPath + '*.gz']);
+});
+
 gulp.task('compress', function(cb) {
   glob(outPath + '**/*', function(er, files) {
     if (er) {
@@ -200,4 +204,8 @@ gulp.task('upload', function(cb) {
 
 gulp.task('default', function(cb) {
   runSequence('clean', 'export', 'compress', 'upload', cb);
+});
+
+gulp.task('restart', function(cb) {
+  runSequence('clean-gz', 'compress', 'upload', cb);
 });
