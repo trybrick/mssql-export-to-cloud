@@ -60,12 +60,11 @@ module.exports = {
       }
     },
     profile: {
-      query: 'SELECT * FROM dbo.vwProfile WITH (NOLOCK)',
+      query: 'SELECT TOP 10000 SiteId, Id, PrimaryStoreId FROM dbo.vwProfile WHERE Email IS NOT NULL',
       output: 'profile.csv',
-      compressFile: true,
+      compressFile: false,
       outputSingleFile: true,
-      idColumn: 'Id',
-      headers: ['Id', 'FirstName'],
+      headers: ['Id', 'SiteId', 'PrimaryStoreId'],
       delimiter: ',',
       rowDelimiter: '\n',
       rowHandler: function(row) {

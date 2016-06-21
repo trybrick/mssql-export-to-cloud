@@ -223,7 +223,10 @@ gulp.task('export', function(cb) {
       // Emitted for each row in a recordset 
       row.etype = etype;
       row.idx = etype + '-' + today.format("YYYY.MM.DD");
-      row.Id = row[typeConfig.idColumn];
+      if (typeConfig.idColumn) {
+        row.Id = row[typeConfig.idColumn];
+      }
+      
       i++;
       if (i % 10000 == 0) {
         console.log(i, row.Id);
