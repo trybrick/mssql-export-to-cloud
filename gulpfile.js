@@ -25,6 +25,12 @@ console.log(typeConfig);
 
 var s3 = require('gulp-s3-upload')(typeConfig.aws);
 
+/**
+ * Check for file/folder exists.
+ * @param  {[type]}  filePath path to file or folder
+ * @param  {Boolean} isFolder true if folder
+ * @return {[type]}           true if exists
+ */
 function exists(filePath, isFolder) {
   try {
     var stat = fs.statSync(filePath);
@@ -34,6 +40,11 @@ function exists(filePath, isFolder) {
   }
 }
 
+/**
+ * Compress a file.
+ * @param  {[type]}   inputFile file path to compress
+ * @param  {Function} cb        callback on complete
+ */
 function compressFile(inputFile, cb) {
   var gzip = zlib.createGzip();
   var fs = require('fs');
@@ -47,11 +58,22 @@ function compressFile(inputFile, cb) {
   inp.on('close', cb);
 }
 
+/**
+ * Upload a file to s3
+ * @param  {[type]}   inputFile [description]
+ * @param  {Function} cb        [description]
+ * @return {[type]}             [description]
+ */
 function processFile(inputFile, cb) {
   var taskName = 'upload' + uploadTasks.length;
   uploadTasks.push(taskName);
   gulp.task(taskName, function() {
-    return gulp.src(inputFile + '.gz', {
+    var search = inputFile;
+    if (typeConfig.compressFile) {
+      search += '.gz';
+    }
+
+    return gulp.src(search, {
       buffer: false
     })
       .pipe(s3({
@@ -66,6 +88,12 @@ function processFile(inputFile, cb) {
         }
       }));
   });
+
+  if (!typeConfig.compressFile) {
+    cb();
+    return;
+  }
+
   compressFile(inputFile, cb);
 }
 
@@ -73,21 +101,54 @@ if (!exists(outPath, true)) {
   mkdirp.sync(outPath);
 }
 
+function arrayToCsv(arr, delimiter) {
+  return _.map(arr, function(value) {
+    if (typeof value === "string") {
+
+      // handle numeric and empty string
+      if (/^\d+$/gi.test(value)) {
+        return value;
+      } else if (!value) {
+        return value;
+      }
+
+      // escape a string with stringify
+      value = JSON.stringify(value);
+    }
+    return value;
+  }).join(delimiter || ',');
+}
+
+
 function writeFile(obj, outFile) {
   outFile = path.resolve(outFile);
-  var data = JSON.stringify(obj) + '\n';
+  var rowDelimiter = typeConfig.rowDelimiter || '\n';
+  var data = JSON.stringify(obj) + rowDelimiter;
 
   var basePath = path.dirname(outFile);
   if (!exists(basePath, true)) {
     mkdirp.sync(basePath);
   }
 
-  if (!exists(outFile)) {
-    fs.writeFileSync(
-      outFile, data
-    );
+  if (typeConfig.headers) {
+    var outData = [];
+    _.each(typeConfig.headers, function(v) {
+      outData.push(obj[v]);
+    });
+    data = arrayToCsv(outData, (typeConfig.delimiter || ',') + rowDelimiter);
+  }
 
-    return;
+  if (!exists(outFile)) {
+    if (typeConfig.headers) {
+      fs.writeFileSync(outFile, arrayToCsv(typeConfig.headers, (typeConfig.delimiter || ',') + rowDelimiter));
+    }
+    else {
+      fs.writeFileSync(
+        outFile, data
+      );
+      return;
+    }
+
   }
 
   fs.appendFileSync(
@@ -98,8 +159,13 @@ function writeFile(obj, outFile) {
 function batchWrite(items, cb) {
   var i = 0;
   _.each(items, function(obj, k) {
-    var filePosfix = i % 10;
-    writeFile(obj, outPath + typeConfig.output + filePosfix);
+    var fileOutPath = outPath + typeConfig.output;
+
+    if (!typeConfig.outputSingleFile) {
+      fileOutPath += i % 10; 
+    }
+
+    writeFile(obj, fileOutPath);
     i++;
   })
   cb();
@@ -142,9 +208,6 @@ gulp.task('export', function(cb) {
 
     request.on('row', function(row) {
       // Emitted for each row in a recordset 
-      if (typeConfig.rowHandler) {
-        typeConfig.rowHandler(row);
-      }
       row.etype = etype;
       row.idx = etype + '-' + today.format("YYYY.MM.DD");
       row.Id = row[typeConfig.idColumn];
@@ -152,6 +215,11 @@ gulp.task('export', function(cb) {
       if (i % 10000 == 0) {
         console.log(i, row.Id);
       }
+      
+      if (typeConfig.rowHandler) {
+        typeConfig.rowHandler(row);
+      }
+
       batchRequestStream.write(row);
     });
 
@@ -173,7 +241,7 @@ gulp.task('clean-gz', function() {
   return del([outPath + '*.gz']);
 });
 
-gulp.task('compress', function(cb) {
+gulp.task('process', function(cb) {
   glob(outPath + '**/*', function(er, files) {
     if (er) {
       cb(er)
@@ -184,28 +252,18 @@ gulp.task('compress', function(cb) {
 });
 
 gulp.task('upload', function(cb) {
-  /*return gulp.src(outPath + '*.gz', {
-    buffer: false
-  })
-    .pipe(s3({
-      Bucket: 'brick-workspace',
-      manualContentEncoding: 'gzip',
-      keyTransform: function(relative_filename) {
-        // add yy mm dd to filename
-        var new_name = 'exports/' + etype + '/' + relative_filename;
-        console.log(new_name);
-        // or do whatever you want 
-        return new_name;
-      }
-    }));*/
   uploadTasks.push(cb);
   runSequence.apply(null, uploadTasks);
 });
 
 gulp.task('default', function(cb) {
-  runSequence('clean', 'export', 'compress', 'upload', cb);
+  runSequence('clean', 'export', 'process', 'upload', cb);
+});
+
+gulp.task('test', function(cb) {
+  runSequence('clean', 'export', 'process', cb);
 });
 
 gulp.task('restart', function(cb) {
-  runSequence('clean-gz', 'compress', 'upload', cb);
+  runSequence('clean-gz', 'process', 'upload', cb);
 });

@@ -33,6 +33,7 @@ module.exports = {
     product: {
       query: 'SELECT * FROM dbo.ProductSearch WITH (NOLOCK)',
       output: 'product_jsline',
+      compressFile: true,
       idColumn: 'ProductID',
       rowHandler: function(row) {
         row.ChainList = (row.ChainList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
@@ -41,6 +42,7 @@ module.exports = {
     circular: {
       query: 'SELECT * FROM dbo.CircularItemSearch WITH (NOLOCK)',
       output: 'circular_jsline',
+      compressFile: true,
       idColumn: 'CircularItemID',
       rowHandler: function(row) {
         row.SkillLevelList = (row.SkillLevelList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
@@ -51,7 +53,21 @@ module.exports = {
     recipe: {
       query: 'SELECT * FROM dbo.RecipeSearchIndex WITH (NOLOCK)',
       output: 'recipe_jsline',
+      compressFile: true,
       idColumn: 'RecipeID',
+      rowHandler: function(row) {
+        row.StoreList = (row.StoreList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
+      }
+    },
+    profile: {
+      query: 'SELECT * FROM dbo.vwProfile WITH (NOLOCK)',
+      output: 'profile.csv',
+      compressFile: true,
+      outputSingleFile: true,
+      idColumn: 'Id',
+      headers: ['Id', 'FirstName'],
+      delimiter: ',',
+      rowDelimiter: '\n',
       rowHandler: function(row) {
         row.StoreList = (row.StoreList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
