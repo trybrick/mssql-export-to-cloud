@@ -97,10 +97,17 @@ function processFile(inputFile, cb) {
   compressFile(inputFile, cb);
 }
 
+// auto create outPath if not exists
 if (!exists(outPath, true)) {
   mkdirp.sync(outPath);
 }
 
+/**
+ * Output array to csv.
+ * @param  {[type]} arr       output array of items
+ * @param  {[type]} delimiter column separator
+ * @return {[type]}           CSV data
+ */
 function arrayToCsv(arr, delimiter) {
   return _.map(arr, function(value) {
     if (typeof value === "string") {
@@ -119,7 +126,12 @@ function arrayToCsv(arr, delimiter) {
   }).join(delimiter || ',');
 }
 
-
+/**
+ * Write object to file.  Handle append if file exists.
+ * @param  {[type]} obj     data object
+ * @param  {[type]} outFile output file
+ * @return {[type]}
+ */
 function writeFile(obj, outFile) {
   outFile = path.resolve(outFile);
   var rowDelimiter = typeConfig.rowDelimiter || '\n';
@@ -135,12 +147,12 @@ function writeFile(obj, outFile) {
     _.each(typeConfig.headers, function(v) {
       outData.push(obj[v]);
     });
-    data = arrayToCsv(outData, (typeConfig.delimiter || ',') + rowDelimiter);
+    data = arrayToCsv(outData, typeConfig.delimiter) + rowDelimiter;
   }
 
   if (!exists(outFile)) {
     if (typeConfig.headers) {
-      fs.writeFileSync(outFile, arrayToCsv(typeConfig.headers, (typeConfig.delimiter || ',') + rowDelimiter));
+      fs.writeFileSync(outFile, arrayToCsv(typeConfig.headers, typeConfig.delimiter) + rowDelimiter);
     }
     else {
       fs.writeFileSync(
@@ -195,6 +207,7 @@ gulp.task('export', function(cb) {
       return;
     }
   };
+
   var Db = sql.connect(config.mssql);
   var query = typeConfig.query;
   var i = 0;
@@ -224,7 +237,6 @@ gulp.task('export', function(cb) {
     });
 
     request.on('error', errorHandler);
-
     request.on('done', function(affected) {
       // Always emitted as the last one 
       request.connection.close();
