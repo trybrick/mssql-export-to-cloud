@@ -66,10 +66,7 @@ module.exports = {
       outputSingleFile: true,
       headers: ['Id', 'SiteId', 'PrimaryStoreId'],
       delimiter: ',',
-      rowDelimiter: '\n',
-      rowHandler: function(row) {
-        row.StoreList = (row.StoreList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
-      }
+      rowDelimiter: '\n'
     }
   }
 };
