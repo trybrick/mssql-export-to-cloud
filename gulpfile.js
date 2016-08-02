@@ -163,9 +163,13 @@ function writeFile(obj, outFile) {
 
   }
 
-  fs.appendFileSync(
-    outFile, data
-  );
+  try {
+    fs.appendFileSync(
+      outFile, data
+    );
+  } catch(ex) {
+    console.log('Error writing file ' + outFile, ex);
+  }
 }
 
 function batchWrite(items, cb) {
