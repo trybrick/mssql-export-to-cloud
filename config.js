@@ -31,7 +31,7 @@ module.exports = {
   },
   etypes: {
     product: {
-      query: 'SELECT * FROM dbo.ProductSearch WITH (NOLOCK)',
+      query: 'SELECT ProductID, UPC, ProductChainID, ProductDescription, BrandName, ItemExtendedSize, UnitOfMeasureID, ItemSize, ChainList, Department, Aisle, Category, Shelf, SearchText, ProductCode, UPC11 FROM dbo.ProductSearch WITH (NOLOCK)',
       output: 'product_jsline',
       compressFile: true,
       idColumn: 'ProductID',
