@@ -9,7 +9,7 @@ module.exports = {
   mssql: {
     user: env.MSSQL_USER,
     password: env.MSSQL_PASS,
-    server: '172.25.46.74',
+    server: 'msssqlprod01.gsn2.com',
     driver: 'tedious',
     database: 'ExpressLaneAdmin',
     connectionTimeout: 15000,
@@ -20,7 +20,6 @@ module.exports = {
       idleTimeoutMillis: 60000
     },
     options: {
-      instanceName: 'gsnweb',
       appName: 'sqlexport'
     }
   },
