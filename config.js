@@ -9,7 +9,7 @@ module.exports = {
   mssql: {
     user: env.MSSQL_USER,
     password: env.MSSQL_PASS,
-    server: 'msssqlprod01.gsn2.com',
+    server: 'mssqlprod01.gsn2.com',
     driver: 'tedious',
     database: 'ExpressLaneAdmin',
     connectionTimeout: 15000,
