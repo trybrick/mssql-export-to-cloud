@@ -29,7 +29,7 @@ module.exports = {
     region: env.AWS_REGION || 'us-west-2'
   },
   etypes: {
-    product: {
+    products: {
       query: 'SELECT ProductID, UPC, ProductChainID, ProductDescription, BrandName, ItemExtendedSize, UnitOfMeasureID, ItemSize, ChainList, Department, Aisle, Category, Shelf, SearchText, ProductCode, UPC11 FROM dbo.ProductSearch WITH (NOLOCK)',
       output: 'product_jsline',
       compressFile: true,
@@ -38,7 +38,7 @@ module.exports = {
         row.ChainList = (row.ChainList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
     },
-    circular: {
+    circulars: {
       query: 'SELECT * FROM dbo.CircularItemSearch WITH (NOLOCK)',
       output: 'circular_jsline',
       compressFile: true,
@@ -49,7 +49,7 @@ module.exports = {
         row.AttributeList = (row.AttributeList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
     },
-    recipe: {
+    recipes: {
       query: 'SELECT * FROM dbo.RecipeSearchIndex WITH (NOLOCK)',
       output: 'recipe_jsline',
       compressFile: true,
