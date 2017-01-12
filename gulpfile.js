@@ -246,10 +246,11 @@ gulp.task('export', function(cb) {
     request.on('error', errorHandler);
     request.on('done', function(affected) {
       setTimeout(function () {
+        console.log("export total: ", i);
         // Always emitted as the last one 
         request.connection.close();
         cb();
-      }, 15000);
+      }, 30000);
     });
   }).catch(errorHandler);
 });
