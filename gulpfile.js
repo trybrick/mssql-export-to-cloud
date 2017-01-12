@@ -245,8 +245,10 @@ gulp.task('export', function(cb) {
 
     request.on('error', errorHandler);
     request.on('done', function(affected) {
+      // flushing the stream
+      batchRequestStream.end();
+      console.log("export total: ", i, affected);
       setTimeout(function () {
-        console.log("export total: ", i);
         // Always emitted as the last one 
         request.connection.close();
         cb();
