@@ -1,8 +1,8 @@
-var fs = require( 'fs' );
+var fs = require('fs');
 var env = process.env;
 
-if ( fs.existsSync( './.env.json' ) ) {
-  env = require( './.env.json' );
+if (fs.existsSync('./.env.json')) {
+  env = require('./.env.json');
 }
 
 module.exports = {
@@ -34,8 +34,8 @@ module.exports = {
       output: 'product_jsline',
       compressFile: true,
       idColumn: 'ProductID',
-      rowHandler: function ( row ) {
-        row.ChainList = ( row.ChainList || '' ).replace( /^(\|)+|(\|)+$/gm, '' ).split( '|' );
+      rowHandler: function(row) {
+        row.ChainList = (row.ChainList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
     },
     circulars: {
@@ -43,10 +43,10 @@ module.exports = {
       output: 'circular_jsline',
       compressFile: true,
       idColumn: 'CircularItemID',
-      rowHandler: function ( row ) {
-        row.SkillLevelList = ( row.SkillLevelList || '' ).replace( /^(\|)+|(\|)+$/gm, '' ).split( '|' );
-        row.NutritionList = ( row.NutritionList || '' ).replace( /^(\|)+|(\|)+$/gm, '' ).split( '|' );
-        row.AttributeList = ( row.AttributeList || '' ).replace( /^(\|)+|(\|)+$/gm, '' ).split( '|' );
+      rowHandler: function(row) {
+        row.SkillLevelList = (row.SkillLevelList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
+        row.NutritionList = (row.NutritionList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
+        row.AttributeList = (row.AttributeList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
     },
     recipes: {
@@ -54,8 +54,8 @@ module.exports = {
       output: 'recipe_jsline',
       compressFile: true,
       idColumn: 'RecipeID',
-      rowHandler: function ( row ) {
-        row.StoreList = ( row.StoreList || '' ).replace( /^(\|)+|(\|)+$/gm, '' ).split( '|' );
+      rowHandler: function(row) {
+        row.StoreList = (row.StoreList || '').replace(/^(\|)+|(\|)+$/gm, '').split('|');
       }
     },
     profile: {
@@ -63,8 +63,17 @@ module.exports = {
       output: 'profile.csv',
       compressFile: false,
       outputSingleFile: true,
-      headers: [ 'Id', 'SiteId', 'PrimaryStoreId' ],
+      headers: ['Id', 'SiteId', 'PrimaryStoreId'],
       delimiter: ',',
+      rowDelimiter: '\n'
+    },
+    productdb: {
+      query: 'SELECT [UPC], [Name], [Brand], [Department], [Aisle], [Category], [Shelf], [ImageUrl] FROM [dbo].[Product2] WITH (NOLOCK)',
+      output: 'products.psv',
+      compressFile: true,
+      outputSingleFile: true,
+      headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
+      delimiter: '|',
       rowDelimiter: '\n'
     }
   }
