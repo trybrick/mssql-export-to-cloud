@@ -63,6 +63,7 @@ module.exports = {
       output: 'profile.csv',
       compressFile: false,
       outputSingleFile: true,
+      idColumn: 'Id',
       headers: ['Id', 'SiteId', 'PrimaryStoreId'],
       delimiter: ',',
       rowDelimiter: '\n'
@@ -72,6 +73,7 @@ module.exports = {
       output: 'products.psv',
       compressFile: false,
       outputSingleFile: true,
+      idColumn: 'upc',
       headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
       delimiter: '|',
       rowDelimiter: '\n'
