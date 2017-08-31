@@ -277,6 +277,10 @@ gulp.task('process', function(cb) {
 });
 
 gulp.task('upload', function(cb) {
+  if (typeConfig.skipUpload) {
+    return cb();
+  }
+
   uploadTasks.push(cb);
   runSequence.apply(null, uploadTasks);
 });

@@ -78,7 +78,8 @@ module.exports = {
       idColumn: 'upc',
       headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
       delimiter: '|',
-      rowDelimiter: '\n'
+      rowDelimiter: '\n',
+      skipUpload: true
     }
   }
 };
