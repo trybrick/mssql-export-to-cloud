@@ -278,6 +278,7 @@ gulp.task('process', function(cb) {
 
 gulp.task('upload', function(cb) {
   if (typeConfig.skipUpload) {
+    console.log('skipping upload...')
     return cb();
   }
 
