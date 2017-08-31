@@ -70,7 +70,7 @@ module.exports = {
       rowDelimiter: '\n'
     },
     productdb: {
-      query: 'SELECT top 10000 [upc], [name], [brand], [department] as dept, [aisle], [category] as cat, [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK)',
+      query: 'SELECT [upc], [name], [brand], [department] as dept, [aisle], [category] as cat, [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK)',
       output: 'products.psv',
       compressFile: true,
       outputSingleFile: true,
