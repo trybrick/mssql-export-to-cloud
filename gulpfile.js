@@ -108,7 +108,7 @@ if (!exists(outPath, true)) {
  * @param  {[type]} delimiter column separator
  * @return {[type]}           CSV data
  */
-function arrayToCsv(arr, delimiter, stringify = false) {
+function arrayToCsv(arr, delimiter, stringify) {
   return _.map(arr, function(value) {
     if (typeof value === "string") {
 
