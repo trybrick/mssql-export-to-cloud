@@ -14,7 +14,9 @@
     "email": "tnguyen@trybrick",
     "url": "http://www.trybrick.com"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tables": "0.0.5"
+  },
   "devDependencies": {
     "async": "^2.0.0-rc.5",
     "aws-sdk": "^2.3.17",
