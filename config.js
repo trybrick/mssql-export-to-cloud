@@ -68,11 +68,11 @@ module.exports = {
       rowDelimiter: '\n'
     },
     productdb: {
-      query: 'SELECT [UPC], [Name], [Brand], [Department], [Aisle], [Category], [Shelf], [ImageUrl] FROM [dbo].[Product2] WITH (NOLOCK)',
+      query: 'SELECT [upc], [name], [brand], [department], [aisle], [cat], [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK)',
       output: 'products.psv',
-      compressFile: true,
+      compressFile: false,
       outputSingleFile: true,
-      headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
+      headers: ['upc', 'name', 'brand', 'department', 'aisle', 'category', 'shelf', 'img'],
       delimiter: '|',
       rowDelimiter: '\n'
     }
