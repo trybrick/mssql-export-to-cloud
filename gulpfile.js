@@ -149,7 +149,7 @@ function writeFile(obj, outFile) {
     _.each(typeConfig.headers, function(v) {
       outData.push(obj[v]);
     });
-    data = arrayToCsv(outData, typeConfig.delimiter, typeConfig.stringifyColumn) + rowDelimiter;
+    data = arrayToCsv(outData, typeConfig.delimiter, typeConfig.stringifyValue) + rowDelimiter;
   }
 
   if (!exists(outFile)) {
