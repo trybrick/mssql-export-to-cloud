@@ -61,7 +61,7 @@ module.exports = {
     profile: {
       query: 'SELECT TOP 10000 SiteId, Id, PrimaryStoreId FROM dbo.vwProfile WHERE Email IS NOT NULL',
       output: 'profile.csv',
-      compressFile: false,
+      compressFile: true,
       outputSingleFile: true,
       idColumn: 'Id',
       headers: ['Id', 'SiteId', 'PrimaryStoreId'],
@@ -71,7 +71,7 @@ module.exports = {
     productdb: {
       query: 'SELECT [upc], [name], [brand], [department] as dept, [aisle], [category] as cat, [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK)',
       output: 'products.psv',
-      compressFile: false,
+      compressFile: true,
       outputSingleFile: true,
       idColumn: 'upc',
       headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
