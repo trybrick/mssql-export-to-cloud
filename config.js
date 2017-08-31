@@ -63,6 +63,7 @@ module.exports = {
       output: 'profile.csv',
       compressFile: true,
       outputSingleFile: true,
+      stringifyValue: false, // if it should stringify individual value, helpful for character escaping requirements
       idColumn: 'Id',
       headers: ['Id', 'SiteId', 'PrimaryStoreId'],
       delimiter: ',',
@@ -73,6 +74,7 @@ module.exports = {
       output: 'products.psv',
       compressFile: true,
       outputSingleFile: true,
+      stringifyValue: false,
       idColumn: 'upc',
       headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
       delimiter: '|',
