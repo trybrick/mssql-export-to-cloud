@@ -1,21 +1,23 @@
 {
   "name": "mssql-export-to-cloud",
-  "description": "Logstash SqlServer indexer",
-  "version": "1.0.0",
+  "description": "Export to cloud job",
+  "version": "1.0.1",
   "keywords": [
-    "logstash"
+    "etl"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/trybrick/lsidxer.git"
+    "url": "https://github.com/trybrick/mssql-export-to-cloud.git"
   },
   "author": {
     "name": "Tom Noogen",
-    "email": "tnguyen@trybrick",
+    "email": "tnguyen@trybrick.com",
     "url": "http://www.trybrick.com"
   },
   "dependencies": {
-    "tables": "0.0.5"
+    "sqlite3": "^3.1.12",
+    "tables": "0.0.5",
+    "text-file-diff": "^1.0.5"
   },
   "devDependencies": {
     "async": "^2.0.0-rc.5",
