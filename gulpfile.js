@@ -20,6 +20,7 @@ var etype = util.env.etype || 'product';
 var today = moment(new Date());
 var uploadTasks = [];
 
+console.log(config);
 var typeConfig = config.etypes[etype];
 console.log(typeConfig);
 
