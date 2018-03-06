@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var gzip = require('gulp-gzip');
 var sql = require('mssql');
 var fs = require('fs');
-var util = require('gulp-util');
 var moment = require('moment');
 var runSequence = require('run-sequence');
 var createBatchRequestStream = require('batch-request-stream');
@@ -16,11 +15,11 @@ var zlib = require('zlib');
 
 var outPath = './export/';
 var config = require('./config.js');
-var etype = util.env.etype || 'product';
+var etype = process.env.etype || 'products';
 var today = moment(new Date());
 var uploadTasks = [];
 
-console.log(config);
+console.log(etype);
 var typeConfig = config.etypes[etype];
 console.log(typeConfig);
 
