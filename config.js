@@ -76,7 +76,7 @@ module.exports = {
       outputSingleFile: true,
       stringifyValue: false,
       idColumn: 'upc',
-      headers: ['upc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
+      headers: ['upc', 'upcnc', 'name', 'brand', 'dept', 'aisle', 'cat', 'shelf', 'img'],
       delimiter: '|',
       rowDelimiter: '\n',
       skipUpload: true
