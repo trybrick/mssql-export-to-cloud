@@ -70,7 +70,7 @@ module.exports = {
       rowDelimiter: '\n'
     },
     productdb: {
-      query: 'SELECT [upc], ('0' + LEFT([upc], 13)) upcnc, [name], [brand], [department] as dept, [aisle], [category] as cat, [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK) WHERE ISNUMERIC(upc) = 1 AND LEN(UPC) = 14 AND CAST(LEFT(UPC,14) AS BIGINT) > 999999',
+      query: 'SELECT [upc], (\'0\' + LEFT([upc], 13)) upcnc, [name], [brand], [department] as dept, [aisle], [category] as cat, [shelf], [imageurl] as img FROM [dbo].[Product2] WITH (NOLOCK) WHERE ISNUMERIC([upc]) = 1 AND LEN([upc]) = 14 AND CAST(LEFT([upc],14) AS BIGINT) > 999999',
       output: 'products.psv',
       compressFile: false,
       outputSingleFile: true,
