@@ -15,25 +15,24 @@
     "url": "http://www.trybrick.com"
   },
   "dependencies": {
-    "sqlite3": "^3.1.12",
-    "tables": "0.0.5",
-    "text-file-diff": "^1.0.5"
+    "sqlite3": "^4.1.1",
+    "tables": "^2.2.2",
+    "text-file-diff": "^1.1.2"
   },
   "devDependencies": {
-    "async": "^2.0.0-rc.5",
-    "aws-sdk": "^2.3.17",
+    "async": "^3.1.0",
+    "aws-sdk": "^2.595.0",
     "batch-request-stream": "^1.1.1",
-    "del": "^2.2.0",
-    "glob": "^7.0.3",
-    "gulp": "^3.9.1",
-    "gulp-gzip": "^1.4.0",
-    "gulp-s3-upload": "^1.6.0",
-    "gulp-util": "^3.0.7",
-    "lodash": "^4.13.1",
+    "del": "^5.1.0",
+    "glob": "^7.1.6",
+    "gulp": "^4.0.2",
+    "gulp-gzip": "^1.4.2",
+    "gulp-s3-upload": "^1.7.3",
+    "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
-    "moment": "^2.13.0",
-    "mssql": "^3.3.0",
-    "multi-glob": "^1.0.1",
-    "run-sequence": "^1.2.1"
+    "moment": "^2.24.0",
+    "mssql": "^6.0.1",
+    "multi-glob": "^1.0.2",
+    "run-sequence": "^2.2.1"
   }
 }
