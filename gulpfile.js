@@ -3,7 +3,6 @@ var gzip = require('gulp-gzip');
 var sql = require('mssql');
 var fs = require('fs');
 var moment = require('moment');
-var runSequence = require('run-sequence');
 var createBatchRequestStream = require('batch-request-stream');
 var mkdirp = require('mkdirp');
 var _ = require('lodash');
@@ -286,14 +285,14 @@ gulp.task('upload', function(cb) {
   runSequence.apply(null, uploadTasks);
 });
 
-gulp.task('default', function(cb) {
-  runSequence('clean', 'export', 'process', 'upload', cb);
-});
+gulp.task('default', gulp.series('clean', 'export', 'process', 'upload', function(done) {
+  done();
+}));
 
-gulp.task('test', function(cb) {
-  runSequence('clean', 'export', 'process', cb);
-});
+gulp.task('test', gulp.series('clean', 'export', 'process', function(done) {
+  done();
+}));
 
-gulp.task('restart', function(cb) {
-  runSequence('clean-gz', 'process', 'upload', cb);
-});
+gulp.task('restart', gulp.series('clean-gz', 'process', 'upload', function(done) {
+  done();
+}));
