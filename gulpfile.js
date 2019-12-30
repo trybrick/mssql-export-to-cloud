@@ -285,8 +285,17 @@ gulp.task('upload', function(cb) {
   gulp.series.apply(gulp, uploadTasks);
 });
 
-gulp.task('default', gulp.series('clean', 'export', 'process', 'upload'));
+gulp.task('default', gulp.series('clean', 'export', 'process', 'upload', function(cb) {
+  cb();
+  process.exit();
+}));
 
-gulp.task('test', gulp.series('clean', 'export', 'process'));
+gulp.task('test', gulp.series('clean', 'export', 'process', function(cb) {
+  cb();
+  process.exit();
+}));
 
-gulp.task('restart', gulp.series('clean-gz', 'process', 'upload'));
+gulp.task('restart', gulp.series('clean-gz', 'process', 'upload', function(cb) {
+  cb();
+  process.exit();
+}));
