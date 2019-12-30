@@ -250,7 +250,7 @@ gulp.task('export', function(cb) {
       console.log("export total: ", i, affected);
       setTimeout(function() {
         // Always emitted as the last one 
-        request.connection.close();
+        // request.connection.close();
         cb();
       }, 30000);
     });
