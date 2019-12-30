@@ -282,8 +282,7 @@ gulp.task('upload', function(cb) {
   }
 
   uploadTasks.push(cb);
-  gulp.series.apply(gulp, uploadTasks);
-  return cb();
+  return gulp.series.apply(gulp, uploadTasks);
 });
 
 gulp.task('default', gulp.series('clean', 'export', 'process', 'upload', function(cb) {
