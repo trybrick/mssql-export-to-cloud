@@ -282,17 +282,11 @@ gulp.task('upload', function(cb) {
   }
 
   uploadTasks.push(cb);
-  runSequence.apply(null, uploadTasks);
+  gulp.series.apply(gulp, uploadTasks);
 });
 
-gulp.task('default', gulp.series('clean', 'export', 'process', 'upload', function(done) {
-  done();
-}));
+gulp.task('default', gulp.series('clean', 'export', 'process', 'upload'));
 
-gulp.task('test', gulp.series('clean', 'export', 'process', function(done) {
-  done();
-}));
+gulp.task('test', gulp.series('clean', 'export', 'process'));
 
-gulp.task('restart', gulp.series('clean-gz', 'process', 'upload', function(done) {
-  done();
-}));
+gulp.task('restart', gulp.series('clean-gz', 'process', 'upload'));
