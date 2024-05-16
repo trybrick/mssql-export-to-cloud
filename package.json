@@ -25,7 +25,7 @@
     "batch-request-stream": "^1.1.1",
     "del": "^5.1.0",
     "glob": "^10.3.15",
-    "gulp": "^5.0.0",
+    "gulp": "^4.0.2",
     "gulp-gzip": "^1.4.2",
     "gulp-s3-upload": "^1.7.3",
     "lodash": "^4.17.21",
